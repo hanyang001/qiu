@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hanyang.dao.UserMapper">
+		<select id="selectType" resultType="dept">
+			select * from dept 
+		</select>
+		<insert id="insert" parameterType="employee">
+			insert into employee (ename,username,password,starttime,entime,salary,d_id)value(#{ename},#{username},#{password},#{starttime},#{entime},#{salary},#{did});
+		</insert>
+		<select id="Exisit" parameterType="employee" resultType="employee">
+			select * from employee where ename=#{ename}
+		</select>
+		<select id="login" parameterType="employee" resultType="employee">
+			SELECT * from employee where username=#{username} and `password`=#{password}
+		</select>
+		<select id="selectAll" resultMap="mm">
+			SELECT * from employee e,dept d where e.d_id=d.did
+		</select>
+		<select id="selectIf" resultMap="mm">
+			SELECT * from employee e,dept d where e.d_id=d.did and salary>#{salary} and d.did=#{did} GROUP BY e.salary DESC
+		</select>
+		<resultMap type="employee" id="mm">
+			<id column="id" property="id"/>
+			<result column="ename" property="ename"/>
+			<result column="username" property="username"/>
+			<result column="password" property="password"/>
+			<result column="starttime" property="starttime"/>
+			<result column="entime" property="entime"/>
+			<result column="salary" property="salary"/>
+			<result column="d_id" property="did"/>
+			<association property="dept" javaType="dept">
+				<id column="did" property="did"/>
+				<result column="dname" property="dname"/>
+			</association>
+		</resultMap>
+		
+</mapper>
